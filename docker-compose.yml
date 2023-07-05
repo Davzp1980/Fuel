@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  go-app:
+    container_name: go-app
+    image: dav1980/go-app:1.0.0
+    build: .
+    environment:
+      DATABASE_URL: "host=go_db user=postgres password=1 dbname=mydb sslmode=disable"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - go_db
+  go_db:
+    container_name: go_db
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: 1
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  
+volumes:  
+  pgdata: {}
